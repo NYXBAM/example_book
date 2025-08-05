@@ -95,3 +95,38 @@ if __name__ == '__main__':
     demo(bisect.bisect_left)
     print('\nDEMO bisect_right:')
     demo(bisect.bisect_right)
+
+
+# # Example of using bisect to find the closest record in a sorted list
+index = [(100, 'addr1'), (200, 'addr2'), (300, 'addr3')]
+key = 250
+pos = bisect.bisect_left(index, (key,))
+# # If pos is not at the end, we can get the closest record
+record = index[pos-1][1] if pos > 0 else None
+print(f"Closest record to {key}: {record}")
+
+# More examples: 
+
+def grade(score, breakpoints=[60,70,80,90], grades='FDCBA'):
+    i = bisect.bisect(breakpoints, score)
+    return grades[i]
+
+print(grade(70))  # Output: 'C'
+print([grade(score) for score in [33, 99, 77, 70, 90, 100]])
+
+
+####### bisect.insort() example
+
+import bisect
+import random
+
+SIZE = 7
+
+random.seed(1729)
+
+my_list = []
+for i in range(SIZE):
+    value = random.randrange(SIZE*2)
+    bisect.insort(my_list, value)
+    print(f'Inserted {value} into {my_list}')
+
