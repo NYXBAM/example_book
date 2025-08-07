@@ -99,3 +99,72 @@ print(d['2'])  # Output: two
 print(d[2])  # Output: tw
 
 print(d.get(4))  # Output: four
+
+# ---------------------------------------- #
+import builtins
+from collections import ChainMap
+
+pylookup = ChainMap(locals(), globals(), vars(builtins))
+print(pylookup)
+
+
+# Simple REPL
+# while True:
+#     try:
+#         expr = input(">>> ")
+#         scope = ChainMap(locals(), globals(), vars(builtins))
+#         print(eval(expr, {}, scope))
+#     except Exception as e:
+#         print(f"Error: {e}")
+
+
+# ---------------------------------------- #
+# User Dict
+
+
+class StrKeyDict(collections.UserDict):
+    def __missing__(self, key):
+        if isinstance(key, str):
+            raise KeyError(key)
+        return self[str(key)]
+    
+    def __contains__(self, key):
+        return super().__contains__(key) or str(key) in self.data
+    
+    def get(self, key, default=None):
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
+    def __setitem__(self, key, item):
+        self.data[str(key)] = item
+
+# Example usage
+d = StrKeyDict()
+d[1] = 'один'
+d['2'] = 'два'
+
+print(d['1'])    # → один
+print(d[1])      # → один
+print(d[2])      # → два
+print(d.get(3, 'нема'))  # → нема
+
+print(1 in d)    # → True
+print('2' in d)  # → True
+print(3 in d)    # → False
+
+data = {'1': 'yes'}
+print(data['1']) 
+# --------------------------------------------- #  
+
+from types import MappingProxyType
+
+d = {1: 'A'}
+d_proxy = MappingProxyType(d)
+print(d_proxy)  # Output: {1: 'A'}
+
+print(d_proxy[1])  
+d[2] = 'B'  # Modifying the original dictionary
+print(d_proxy)  # Output: {1: 'A', 2: 'B'}
+
