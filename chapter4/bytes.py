@@ -66,3 +66,23 @@ def nfc_equal(s1, s2):
 
 
 print(nfc_equal(s1, s2))  # True
+
+
+### --- UNICODE NORMALIZATION --- ###
+
+import unicodedata
+import string
+
+def shave_marks(txt):
+    norm_txt = unicodedata.normalize('NFD', txt)
+    shaved = ''.join(c for c in norm_txt
+                     if unicodedata.combining(c))
+    return unicodedata.normalize('NFC', shaved)
+
+
+order = '<>><><>><Hello ĉ, ĝ, ĥ, ĵ,sdkas Hersssr Voß: # § ⸹ ¶ ⸿ (capitulum) № ⌘ ჻ ፨ ※ ℹ ⅈ '
+
+
+
+shaved_order = shave_marks(order)
+print(shaved_order) 
