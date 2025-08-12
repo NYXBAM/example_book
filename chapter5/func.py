@@ -69,3 +69,54 @@ def test_func(**par):
     print(par)
 
 test_func(z=1, k=2, h=3, s=4, q=5)
+
+ # ------------------- sig -------------------- # 
+
+from inspect import signature
+
+sig = signature(reverce_string)
+print(sig) # <Signature (s)>
+
+sign = signature(factorial)
+
+my_sig = {3}
+bound_args = sig.bind(*my_sig)
+print(bound_args)  # BoundArguments(args=(3,), kwargs={})
+
+
+# ---------------------- annotations -------------------- #
+
+def clip(text: str, max_len: 'int > 0' = 80) -> str:
+    '''Return text clipped to a maximum length'''
+    if len(text) > max_len:
+        return text[:max_len]
+    return text
+
+print(clip.__annotations__)  # {'text': <class 'str'>, 'max_len': 'int > 0', 'return': <class 'str'>}
+
+# ---------------------- operator ------------------------- #
+from functools import reduce
+from operator import mul
+
+def fact(n):
+    return reduce(mul, range(1, n+1))
+
+print(fact(5))  # 120
+
+metro_data = [
+    ('Tokyo', 'JPN', 36.933, (35.689722, 139.691667)),
+    ('Delhi', 'IND', 21.935, (28.613889, 77.208889)),
+    ('Mexico-city', 'MEX', 20.142, (19.428056, -99.133333)),
+    ('New York', 'USA', 8.336, (40.712778, -74.005833)),
+    ('Sao Paulo', 'BRA', 10.992, (-23.547778, -46.635833)),
+    ('Mumbai', 'IND', 12.442, (19.076111, 72.877778)),
+    ('Shanghai', 'CHN', 24.150, (31.222222, 121.458056)),
+]
+
+from operator import itemgetter
+for city in sorted(metro_data, key=itemgetter(3)):
+    print(city)
+
+cc_name = itemgetter(1, 0)
+for city in metro_data:
+    print(cc_name(city))  # ('JPN', 'Tokyo'), ('IND', 'Delhi'), ...
