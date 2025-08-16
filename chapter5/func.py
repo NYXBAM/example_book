@@ -149,3 +149,14 @@ print(upcase(s))  # THE TIME HAS COME
 print(str.upper(s))  # THE TIME HAS COME
 hiphenate = methodcaller('replace', ' ', '-')
 print(hiphenate(s))  # The-time-has-come
+
+# ---------------------------- partial ----------------------- #
+
+from operator import mul
+from functools import partial
+
+triple = partial(mul, 3)
+print(triple(7))  # 21
+
+l = list(map(triple, range(1, 11)))  # [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
+print(l)
