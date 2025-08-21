@@ -136,13 +136,32 @@ def large_order_promo(order):
         return order.total() * 0.07
     return 0
 
+# promos = [fidelity_promo, bulk_item_promo, large_order_promo]
+
+# promos find in global()
+promos = [
+    globals()[name] for name in globals()
+    if name.endswith('_promo')
+    and name != 'best_promo'
+    ]
+
+def best_promo(order):
+    "Best max promo"
+    return max(promo(order) for promo in promos)
+
+
 
 # Example usage
 customer1 = Customer('John Doe', 1200)
 cart = [LineItem('item1', 1, 100), LineItem('item2', 2, 50), 
           LineItem('item3', 3, 30), LineItem('item4', 4, 20)]
+customer2 = Customer("Jimmy", 392932)
+cart2= [LineItem('j2j', 5, 5034), LineItem('jj3', 5, 50342), LineItem('jj34', 5, 5034),
+LineItem('jj22', 5, 50334),]
 
 order1 = Order(customer1, cart, fidelity_promo)
 print(order1)  # <Order total:200.00 due:190.00>
 
-    
+order2 = Order(customer2, cart2, best_promo)
+print(order2)
+
