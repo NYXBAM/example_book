@@ -91,10 +91,49 @@ print(login('admin', '1234'))
 # ------------------------------------ # 
 
 
-@timing
-def slow():
-    time.sleep(1)
+# @timing
+# def slow():
+#     time.sleep(1)
 
-slow()
+# slow()
+
+# @timing
+# def start_count():
+#     total = 0
+#     while total < 999990:
+#         total += 1
+#         print(total)
+
+
+# start_count()
+
+
+# ------------------- # 
+
+def cache(func):
+    saved = {}
+    def wrapper(x):
+        if x in saved:
+            print(f"Take from cache: {x}")
+            return saved[x]
+        result = func(x)
+        saved[x] = result
+        return result
+    return wrapper
+
+
+@timing
+@cache
+def slow_square(x):
+    print(f"Sqrt {x}...")
+    return x * x
+
+print(slow_square(4))
+
+print(slow_square(4))
+
+print(slow_square(4)) 
+print(slow_square(4)) 
+
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
