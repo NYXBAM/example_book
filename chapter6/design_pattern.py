@@ -138,7 +138,7 @@ def large_order_promo(order):
 
 # promos = [fidelity_promo, bulk_item_promo, large_order_promo]
 
-# promos find in global()
+# promos find in globals()
 promos = [
     globals()[name] for name in globals()
     if name.endswith('_promo')
@@ -164,4 +164,35 @@ print(order1)  # <Order total:200.00 due:190.00>
 
 order2 = Order(customer2, cart2, best_promo)
 print(order2)
+
+##### Command pattern
+
+class MacroCommand:
+    "List of commands"
+    def __init__(self, commands):
+        self.commands = list(commands)
+
+    def __call__(self):
+        for command in self.commands:
+            command()
+
+
+# for example u have a few commands 
+
+def turn_on():
+    print('Turned on')
+
+def turn_off():
+    print('Turned off')
+
+def play_music():
+    print('Music')
+
+
+macro = MacroCommand([turn_on, turn_off, play_music]) 
+
+macro() #
+        # Turned on
+        # Turned off
+        # Music
 
