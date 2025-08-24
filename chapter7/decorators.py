@@ -135,5 +135,15 @@ print(slow_square(4))
 print(slow_square(4)) 
 print(slow_square(4)) 
 
+# --------------- closure --------------- # 
+def outer_func(x):
+    def inner_func(y):
+        return x + y  
+    return inner_func
+
+closure = outer_func(10)  
+print(closure(5))  # 15
+print(closure(20)) # 30
+
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
