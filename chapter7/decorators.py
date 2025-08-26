@@ -146,4 +146,26 @@ print(closure(5))  # 15
 print(closure(20)) # 30
 
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+
+# --------------------- singledispatch --------------------- # 
+
+from functools import singledispatch
+
+@singledispatch
+def process(value):
+    print(f"Unknown {type(value)} -> {value}")
+
+@process.register(int)
+def _(value):
+    print(f"This is integer: {value}")
+
+@process.register(str)
+def _(value):
+    print(f"This is string: '{value}'")
+
+@process.register(list)
+def _(value):
+    print(f"This is list with {len(value)} elements")
+
+lst = [1,2,3,4,5,6,7,8]
+process(lst)  # This is list with 8 elements
