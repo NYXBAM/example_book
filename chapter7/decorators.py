@@ -169,3 +169,32 @@ def _(value):
 
 lst = [1,2,3,4,5,6,7,8]
 process(lst)  # This is list with 8 elements
+
+# --------------------- Simple MutableSequence --------------------- #
+
+class MyList(MutableSequence):
+    def __init__(self, initial=None):
+        self._data = list(initial) if initial is not None else []
+
+    def __len__(self):
+        return len(self._data)
+
+    def __getitem__(self, index):
+        return self._data[index]
+
+    def __setitem__(self, index, value):
+        self._data[index] = value
+
+    def __delitem__(self, index):
+        del self._data[index]
+
+    def insert(self, index, value):
+        self._data.insert(index, value)
+
+    def __repr__(self):
+        return f"MyList({self._data})"
+    
+ml = MyList([1,2,3])
+ml.append(4)
+ml.insert(1, 99)
+print(ml)  # MyList([1, 99, 2, 3, 4])
