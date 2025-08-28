@@ -96,11 +96,9 @@ def make_averager():
     functional realisation
     '''
     series = []
-    hueries = []
 
     def averager(new_value):
         series.append(new_value)
-        print(hueries)
         total = sum(series)
         return total/len(series)
     return averager
