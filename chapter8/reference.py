@@ -104,3 +104,77 @@ print(a) # [10, 20, [...], 30]
 from copy import deepcopy
 c = deepcopy(a)
 print(c) # [10, 20, [...], 30]
+
+# --------------- call by sharing muttable / immutable  --------------- # 
+print('\nCall by sharing:')
+
+def f(a, b):
+    a += b 
+    return a 
+
+x = 1 
+y = 2 
+print(f(x, y))
+a = [1, 2]
+b = [3, 4]
+
+print(f(a, b)) #  [1, 2, 3, 4]
+print(a, b) # [1, 2, 3, 4] [3, 4]
+
+t = (10, 20)
+u = (30, 40)
+ 
+print(f(t, u)) # (10, 20, 30, 40)
+print(t, u) #  (10, 20) (30, 40)
+
+class HauntedBus:
+    def __init__ (self, passengers=[]):
+        self.passengers = passengers
+        
+    def pick(self, name):
+        self.passengers.append(name)
+        
+    def drop(self, name):
+        self.passengers.remove(name)
+        
+
+
+bus1 = HauntedBus(['Alice', 'Bill'])
+print(bus1.passengers) # ['Alice', 'Bill']
+bus1.pick('Charlie')
+bus1.drop('Alice')
+print(bus1.passengers) # ['Bill', 'Charlie']
+
+bus2 = HauntedBus()
+bus2.pick('Carrie')
+print(bus2.passengers) # ['Carrie']
+
+bus3 = HauntedBus()
+print(bus3.passengers) # ['Carrie']
+bus3.pick('Dave')
+print(bus2.passengers) # ['Carrie', 'Dave']
+print(bus2.passengers is bus3.passengers)  # True
+
+print(HauntedBus.__init__.__defaults__[0])  # ['Carrie', 'Dave']
+
+class TwilightBus:
+    def __init__ (self, passengers=None):
+        if passengers is None:
+            self.passengers = []
+        else:
+            self.passengers = passengers  # we need to copy this list if we want to avoid side effects
+            # self.passengers = list(passengers) # It`s correct and better way
+            
+    def pick(self, name):
+        self.passengers.append(name)
+        
+    def drop(self, name):
+        self.passengers.remove(name)
+        
+basketball_team = ['Sue', 'Tina', 'Maya', 'Diana', 'Pat']
+bus = TwilightBus(basketball_team)
+bus.drop('Tina') 
+bus.drop('Pat')
+print(basketball_team) # ['Sue', 'Maya', 'Diana']
+
+
