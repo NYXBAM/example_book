@@ -178,3 +178,27 @@ bus.drop('Pat')
 print(basketball_team) # ['Sue', 'Maya', 'Diana']
 
 
+# --------------- del and weak ref--------------- # 
+print('\ndel weak ref:')
+import weakref
+s1 = {1, 2, 3}
+s2 = s1 
+def bye():
+    print('Gone with the wind...')
+    
+ender = weakref.finalize(s1, bye)
+# weakref.finalize(obj, callback)  # u can initialize weak reference with callback
+print(ender.alive) # True
+del s1
+print(ender.alive) # True
+s2 = 'spam'
+print(ender.alive) # False
+
+a_set = {0, 1}
+wref = weakref.ref(a_set)
+print(wref()) # {0, 1}
+result1 = wref() is None  # False
+print(wref() is None) # False
+
+# --------------- WeakValueDictionary --------------- #
+# print('\nWeakValueDictionary:')
