@@ -7,9 +7,17 @@ class Vector2d:
     typecode = 'd'
     
     def __init__(self, x, y):
-        self.x = float(x)
-        self.y = float(y)
-        
+        self.__x = float(x)
+        self.__y = float(y)
+    @property    
+    def x(self):
+        return self.__x
+    @property
+    def y(self):
+        return self.__y
+    def __hash__(self):
+        return hash(self.x) ^ hash(self.y)
+    
     def __iter__(self):
         return (i for i in (self.x, self.y))
     
@@ -32,6 +40,20 @@ class Vector2d:
     
     def __bool__(self):
         return bool(abs(self)) 
+    
+    def __format__(self, fmt_spec=''):
+        if fmt_spec.endswith('p'):
+            fmt_spec = fmt_spec[:-1]
+            coords = (abs(self), self.angle())
+            outer_fmt = '<{}, {}>'
+        else:
+            coords = self
+            outer_fmt = '({}, {})'
+        components = (format(c, fmt_spec) for c in coords)
+        return outer_fmt.format(*components)
+    
+    def angle(self):
+        return math.atan2(self.y, self.x)
     
     @classmethod
     def frombytes(cls, octets):
@@ -73,6 +95,7 @@ print(Demo.statmeth()) # ()
 print(Demo.statmeth('spam')) # ('spam',)
 
 # --------------------- format --------------------- # 
+# Some examples and small sheets formating showed in format_sheet.py
 print("*"*40)
 print('\noutput format \n')
 
@@ -80,3 +103,17 @@ brl = 1/2.43 #
 
 print(format(brl, '0.4f')) # 0.4115
 print('1 BRT = {rate:0.2f} USD'.format(rate=brl))
+
+v1 = Vector2d(3, 6)
+print(format(v1)) # (3.0, 6.0)
+print(format(v1, '.2f')) # (3.00, 6.00)
+print(format(v1, '.3e')) # (3.000e+00, 6.000e+00)
+# using 'p' to switch to polar coordinates
+print(format(Vector2d(1, 1), 'p')) # <1.4142135623730951, 0.7853981633974483>
+print(format(Vector2d(1, 1), '.3ep')) # <1.414e+00, 7.854e-01>
+print(format(Vector2d(1, 1), '0.5fp')) # <1.41421, 0.78540>
+
+
+v1 = Vector2d(3, 4)
+v2 = Vector2d(3.1, 4.2)
+print(hash(v1), hash(v2)) #7 384307168202284039
