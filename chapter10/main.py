@@ -296,8 +296,21 @@ class Vector:
                 bytes(self._components))
     
         
+    # def __eq__(self, other):
+    #     return tuple(self) == tuple(other)
+    
+    # Newest method for eq to avoid creating large tuples in memory 
+    # def __eq__(self, other):
+    #     if len(self) != len(other):
+    #         return False
+    #     for a, b in zip(self, other):
+    #         if a != b:
+    #             return False
+    #     return True
+    
+    # Short way of above method
     def __eq__(self, other):
-        return tuple(self) == tuple(other)
+        return (len(self)) == len(other) and all(a == b for a, b in zip(self, other))
     
     def __abs__(self):
         return math.sqrt(sum(x * x for x in self))
@@ -320,7 +333,9 @@ class Vector:
     
     # new method to get hash
     def __hash__(self):
-        hashes = (hash(x) for x in self._components)
+        # hashes = (hash(x) for x in self._components)
+        # or we can use 
+        hashes = map(hash, self._components)
         return functools.reduce(operator.xor, hashes, 0)
     
     def __getattr__(self, name):
@@ -355,5 +370,16 @@ class Vector:
     
 v1 = Vector([1.0, 2.0, 3.0])
 v3 = Vector([4.0, 5.0, 6.0])
-print(hash(v1)) 
-print(hash(v3))
+print(hash(v1)) # 0
+print(hash(v3)) # 7
+
+# --------------- interesitng zip --------------- # 
+print('*'*60)
+print('\ninteresitng zip:\n')
+
+print(zip('abc', range(3))) # <zip object at 0x7f8e2c4d1c80>
+
+print(list(zip(range(3), "ABC"))) # [(0, 'A'), (1, 'B'), (2, 'C')]
+
+from itertools import zip_longest
+print(list(zip_longest(range(3), "ABC", [0.0, 1.1, 2.2, 3.3] , fillvalue='-1'))) # [(0, 'A', 0.0), (1, 'B', 1.1), (2, 'C', 2.2), ('-1', '-1', 3.3)]
