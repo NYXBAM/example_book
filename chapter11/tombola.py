@@ -24,6 +24,15 @@ class Tombola(abc.ABC):
         self.load(items)
         return tuple(sorted(items))
     
+    def __iter__(self):
+        return iter(self.inspect())
+    
+    def __str__(self):
+        return f"STR: {list(self.inspect())}"
+    
+
+    
+    
 
 class Fake(Tombola):
     def pick(self):
@@ -58,7 +67,7 @@ class BingoCage(Tombola):
 class LotteryBlower(Tombola):
     def __init__(self, iterable):
         self._balls = list(iterable)
-        
+
     def load(self, iterable):
         self._balls.extend(iterable)
         
@@ -95,3 +104,20 @@ class TomboList(list):
     def inspect(self):
         return tuple(sorted(self))
     
+# BingoCage use examples (not from book)
+
+bingo = BingoCage([1])
+print(bingo.pick()) # random number
+print(bingo.inspect())
+bingo.load([2,3,4,5,6,7]) 
+print(bingo.pick())
+print(bingo.inspect())
+
+# LotteryBlow use examples (not from book)
+
+blower = LotteryBlower([1,2])
+print(blower.pick())
+blower.load([123,124,125])
+print(blower) # added __str__ in child Tombola
+
+print(blower.pick())
