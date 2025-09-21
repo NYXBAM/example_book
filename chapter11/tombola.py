@@ -11,7 +11,6 @@ class Tombola(abc.ABC):
         If the instance is empty, this should raise a LookupError. '''
     
     def loaded(self):
-        print(self) # for debugging
         return bool(self.inspect())
     
     def inspect(self):
@@ -34,11 +33,11 @@ class Tombola(abc.ABC):
     
     
 
-class Fake(Tombola):
-    def pick(self):
-        return 13
+# class Fake(Tombola):
+#     def pick(self):
+#         return 13
     
-print(Fake) # <class '__main__.Fake'>
+# print(Fake) # <class '__main__.Fake'>
 
 # f = Fake() # TypeError: Can't instantiate abstract class Fake without an implementation for abstract method 'load'
 
@@ -104,20 +103,24 @@ class TomboList(list):
     def inspect(self):
         return tuple(sorted(self))
     
-# BingoCage use examples (not from book)
+# Tombola.register(TomboList)
+# print(TomboList.__mro__) # (<class '__main__.TomboList'>, <class 'list'>, <class 'object'>)
 
-bingo = BingoCage([1])
-print(bingo.pick()) # random number
-print(bingo.inspect())
-bingo.load([2,3,4,5,6,7]) 
-print(bingo.pick())
-print(bingo.inspect())
+
+
+# BingoCage use examples (not from book)
+# bingo = BingoCage([1])
+# print(bingo.pick()) # random number
+# print(bingo.inspect())
+# bingo.load([2,3,4,5,6,7]) 
+# print(bingo.pick())
+# print(bingo.inspect())
 
 # LotteryBlow use examples (not from book)
 
-blower = LotteryBlower([1,2])
-print(blower.pick())
-blower.load([123,124,125])
-print(blower) # added __str__ in child Tombola
-
-print(blower.pick())
+# blower = LotteryBlower([1,2])
+# print(blower.pick())
+# blower.load([123,124,125])
+# print(blower) # added __str__ in child Tombola
+# print(blower.pick())
+# print(Tombola.__subclasses__())  # [<class '__main__.Fake'>, <class '__main__.BingoCage'>, <class '__main__.LotteryBlower'>]
