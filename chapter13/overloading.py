@@ -5,6 +5,7 @@ import functools
 import operator
 import math
 import itertools
+from collections import Counter
 
 # repr unary operators
 class Vector:
@@ -16,6 +17,9 @@ class Vector:
     def __iter__(self):
         return iter(self._components)
 
+    def __add__(self, other):
+        pairs = itertools.zip_longest(self, other, fillvalue=0.0)
+        return Vector(a + b for a, b in pairs)
      # unary operators
     def __abs__(self):
         return math.sqrt(sum(x * x for x in self))
@@ -42,9 +46,6 @@ class Vector:
     
     def __eq__(self, other):
         return (len(self)) == len(other) and all(a == b for a, b in zip(self, other))
-    
-    def __abs__(self):
-        return math.sqrt(sum(x * x for x in self))
     
     def __bool__(self):
         return bool(abs(self))
@@ -132,3 +133,23 @@ print(one_third == +one_third) # True
 ctx.prec = 28
 print(one_third == +one_third) # False
 print(+one_third) # 0.3333333333333333333333333333
+
+ct = Counter('abracadabra')
+print(ct) # Counter({'a': 5, 'b': 2, 'r': 2, 'c': 1, 'd': 1})
+ct['r'] = - 3 
+ct['d'] = 0 
+print(ct) # Counter({'a': 5, 'b': 2, 'c': 1, 'd': 0, 'r': -3})
+
+
+# Vector and overloading 
+v1 = Vector([3, 4, 5])
+v2 = Vector([6, 7, 8])
+print(v1 + v2) # (9.0, 11.0, 13.0)
+print(v1 + v2 == Vector([3+6, 4+7, 5+8])) # True
+v1 = Vector([3, 4, 5, 6])
+v3 = Vector([1, 2])
+print(v1 + v3) # (4.0, 6.0, 5.0, 6.0)
+
+v1 = Vector([3, 4, 5]) 
+print(v1 + (10, 20, 30))  # (13.0, 24.0, 35.0)
+
