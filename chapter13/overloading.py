@@ -18,11 +18,43 @@ class Vector:
         return iter(self._components)
 
     def __add__(self, other):
-        pairs = itertools.zip_longest(self, other, fillvalue=0.0)
-        return Vector(a + b for a, b in pairs)
+        try:
+            pairs = itertools.zip_longest(self, other, fillvalue=0.0)
+            return Vector(a + b for a, b in pairs)
+        except TypeError:
+            # NotImplemented is a special mechanism to run another method, in this case is other.__radd__
+            return NotImplemented
+        
+    # Reflected, or reversed, or right method add
+    def __radd__(self, other):
+        return self + other
+    
      # unary operators
+    
     def __abs__(self):
         return math.sqrt(sum(x * x for x in self))
+    # Not better implementation for scalar multiplication
+    # def __mul__(self, scalar):
+        # return Vector(n * scalar for n in self)
+    
+    def __mul__(self, scalar):
+        if isinstance(scalar, numbers.Real):
+            return Vector(n * scalar for n in self)
+        else:
+            return NotImplemented
+    
+    def __rmul__(self, scalar):
+        return self * scalar
+    
+    # method added in Python 3.5
+    def __matmul__(self, other):
+        try:
+            return sum(a * b for a, b in zip(self, other))
+        except TypeError:
+            return NotImplemented
+        
+    def __rmatmul__(self, other):
+        return self @ other
     
     # unary operators
     def __neg__(self):
@@ -91,6 +123,7 @@ class Vector:
             if error:
                 raise AttributeError(error)
         super().__setattr__(name, value)
+    
     def angle(self, n):
         r = math.sqrt(sum(x * x for x in self[n:]))
         a = math.atan2(r, self[n - 1])
@@ -153,3 +186,12 @@ print(v1 + v3) # (4.0, 6.0, 5.0, 6.0)
 v1 = Vector([3, 4, 5]) 
 print(v1 + (10, 20, 30))  # (13.0, 24.0, 35.0)
 
+# print((10,20,30) + v1) # can only concatenate tuple (not "Vector") to tuple
+
+v1 = Vector([1.0, 2.0, 3.0])
+print(14 * v1) # (14.0, 28.0, 42.0)
+
+# Example usage __matmul__
+v1 = Vector([1, 2, 3])
+v2 = Vector([4, 5, 6])
+print(v1 @ v2) # 32.0
