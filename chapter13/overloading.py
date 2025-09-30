@@ -76,8 +76,16 @@ class Vector:
         return (bytes([ord(self.typecode)]) +
                 bytes(self._components))
     
+    # Old __eq__ implementation
+    # def __eq__(self, other):
+    #     return (len(self)) == len(other) and all(a == b for a, b in zip(self, other))
+    
+    # Better __eq__ implementation
     def __eq__(self, other):
-        return (len(self)) == len(other) and all(a == b for a, b in zip(self, other))
+        if isinstance(other, Vector):
+            return (len(self)) == len(other) and all(a == b for a, b in zip(self, other))
+        else:
+            return NotImplemented
     
     def __bool__(self):
         return bool(abs(self))
@@ -195,3 +203,8 @@ print(14 * v1) # (14.0, 28.0, 42.0)
 v1 = Vector([1, 2, 3])
 v2 = Vector([4, 5, 6])
 print(v1 @ v2) # 32.0
+
+# Example usage __eq__
+va = Vector([1.0, 2.0, 3.0])
+vb = Vector(range(1, 4))
+print(vb == va) # True 
