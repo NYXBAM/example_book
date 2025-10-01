@@ -6,6 +6,13 @@ import operator
 import math
 import itertools
 from collections import Counter
+import sys
+import os
+
+# adding the project root to the sys path to solve imports Tombola and BingoCage
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, project_root)
+
 
 # repr unary operators
 class Vector:
@@ -162,7 +169,6 @@ class Vector:
         return cls(memv)
 
 
-
 # When x != +x 
 
 import decimal 
@@ -208,3 +214,64 @@ print(v1 @ v2) # 32.0
 va = Vector([1.0, 2.0, 3.0])
 vb = Vector(range(1, 4))
 print(vb == va) # True 
+
+
+# += and *= examples 
+
+v1 = Vector([1, 2, 3])
+v1_alias = v1
+print(id(v1)) # 4537510864
+v1 += Vector([4, 5, 6])
+print(v1) # (5.0, 7.0, 9.0)
+print(id(v1)) # 4482886208  - new object
+print(v1_alias) # (1.0, 2.0, 3.0)
+v1 *= 11
+print(v1) # (55.0, 77.0, 99.0)
+print(id(v1)) # 4477950768
+
+
+
+import itertools
+from chapter11.tombola import Tombola
+from chapter11.tombola import BingoCage
+
+class AddableBingoCage(BingoCage):
+    def __add__(self, other):
+        if isinstance(other, Tombola):
+            return AddableBingoCage(self.inspect() + other.inspect())
+        else:
+            return NotImplemented
+        
+    def __iadd__(self, other):
+        if isinstance(other, Tombola):
+            other_iterable = other.inspect()
+        else:
+            try:
+                other_iterable = iter(other)
+            except TypeError:
+                self_cls = type(self).__name__
+                msg = "right operand in += must be {!r} or an iterable"
+                raise TypeError(msg.format(self_cls))
+        
+        self.load(other_iterable)
+        return self
+
+vowels = 'AEIOU'
+globe = AddableBingoCage(vowels)
+print(globe.inspect())
+print(globe.pick() in vowels) # True
+print(len(globe.inspect())) #4
+globe2 = AddableBingoCage('XYZ')
+globe3 = globe + globe2
+print(len(globe3.inspect())) # 7
+# void = globe + [10, 20]  # TypeError: unsupported operand type(s) for +: 'AddableBingoCage' and 'list'
+
+globe_orig = globe 
+print(len(globe.inspect())) # 4
+globe += globe2
+print(len(globe.inspect())) # 7
+globe += ['M', 'N']
+print(len(globe.inspect())) # 9
+print(globe is globe_orig) # True
+# globe += 1 # TypeError: right operand in += must be 'AddableBingoCage' or an iterable
+
