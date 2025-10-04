@@ -120,19 +120,50 @@ class SentenceIterator:
     
     RE_WORD = re.compile('\w+')
     
-    class Sentence3: 
+class Sentence3:  
+     def __init__(self, text):
+         self.text = text 
+         self.words = RE_WORD.findall(text)
+         
+     def __repr__(self):
+         return 'Sentence(%s)' % reprlib.repr(self.text)
+     
+     def __iter__(self):
+         for word in self.words:
+             yield word
+         return
         
-        def __init__(self, text):
-            self.text = text 
-            self.words = RE_WORD.findall(text)
-            
-        def __repr__(self):
-            return 'Sentence(%s)' % reprlib.repr(self.text)
-        
-        def __iter__(self):
-            for word in self.words:
-                yield word
-            return
-        
-        
-        
+# generators 
+
+def gen_123():
+    yield 1
+    yield 2
+    yield 3
+    
+print(gen_123) # <function gen_123 at 0x101a7a0d0>
+
+for i in gen_123():
+    print(i) # 1 2 3 
+    
+g = gen_123()
+print(next(g)) # 1
+print(next(g)) # 2
+print(next(g)) # 3 
+# print(next(g)) # StopIteration
+
+def gen_AB():
+    print('start')
+    yield "A"
+    print('continue')
+    yield "B"
+    print('end')
+    
+for c in gen_AB():
+    print('->', c)
+    # start
+    # -> A
+    # continue
+    # -> B
+    # end
+
+    
