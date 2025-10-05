@@ -167,3 +167,60 @@ for c in gen_AB():
     # end
 
     
+# Lazy version of Sentence class 
+# Sentence4
+
+import re 
+import reprlib
+
+RE_WORD = re.compile('\w+')
+
+class Sentence4:
+    
+    def __init__(self, text):
+        self.text = text
+    
+    def __repr__(self):
+        return 'Sentence(%s)' % reprlib.repr(self.text)
+    
+    def __iter__(self):
+        for match in RE_WORD.finditer(self.text):
+            yield match.group()
+            
+            
+# Trying number 5 using generator expression
+# Sentence5
+
+
+def gen_AB():
+    print('start')
+    yield 'A'
+    print('continue')
+    yield 'B'
+    print('end')
+    
+res1 = [x*3 for x in gen_AB()]
+print(res1)
+for i in res1:
+    print('-->', i)
+    
+res2 = (x*3 for x in gen_AB())
+print(res2) # <generator object <genexpr> at 0x1104d5f20>
+
+# Then we can create Sentence5 with generator expression
+
+import re 
+import reprlib
+
+RE_WORD = re.compile('\w+')
+
+class Sentence5: 
+        def __init__(self, text):
+            self.text = text
+        
+        def __repr__(self):
+            return 'Sentence(%s)' % reprlib.repr(self.text)
+        
+        def __iter__(self):
+            """Here we use generator expression"""
+            return (match.group() for match in RE_WORD.finditer(self.text))
