@@ -275,3 +275,28 @@ def aritprog_gen(begin, step, end=None):
         result = begin + step * index
 
 
+# Using itertools
+import itertools
+
+gen = itertools.count(1, .5)
+
+print(next(gen)) # 1
+print(next(gen)) # 1.5
+print(next(gen)) # 2.0
+print(next(gen)) # 2.5
+
+gen = itertools.takewhile(lambda n: n < 3, itertools.count(1, .5))
+print(list(gen)) # [1, 1.5, 2.0, 2.5]
+
+# then using takewhile, we create new 
+# function aritprog_gen
+
+def aritropgen_gen(begin, step, end=None):
+    first = type(begin + step)(begin)
+    ap_gen = itertools.count(first, step)
+    if end is not None:
+        ap_gen = itertools.takewhile(lambda n: n < end, ap_gen)
+    
+    return ap_gen
+
+
