@@ -305,7 +305,7 @@ def vowel(c):
     return c.lower() in "aeiou"
 
 print(list(filter(vowel, "Aardvark"))) # ['A', 'a', 'a']
-
+# itertools func 
 import itertools
 print(list(itertools.filterfalse(vowel, "Aardvark"))) # ['r', 'd', 'v', 'r', 'k']
 print(list(itertools.dropwhile(vowel, "Aardvark"))) # ['r', 'd', 'v', 'r', 'k']
