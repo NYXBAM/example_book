@@ -336,3 +336,40 @@ print(list(itertools.starmap(operator.mul, enumerate('albatroz', 1)))) # ['a', '
 sample = [5, 4, 2, 8, 7, 6, 3, 0, 9, 1]
 print(list(itertools.starmap(lambda a, b: b/a, 
                              enumerate(itertools.accumulate(sample), 1)))) # [5.0, 4.5, 3.6666666666666665, 4.75, 5.2, 5.333333333333333, 5.0, 4.375, 4.888888888888889, 4.5]
+
+print(list(itertools.chain('ABC', range(2)))) # ['A', 'B', 'C', 0, 1]
+print(list(itertools.chain(enumerate('ABC'))))  # [(0, 'A'), (1, 'B'), (2, 'C')]
+print(list(itertools.chain.from_iterable(enumerate('ABC')))) # [0, 'A', 1, 'B', 2, 'C']
+print(list(zip('ABC', range(5)))) # [('A', 0), ('B', 1), ('C', 2)]
+print(list(zip('ABC', range(5), [10, 20, 30, 40]))) # [('A', 0, 10), ('B', 1, 20), ('C', 2, 30)]
+print(list(itertools.zip_longest('ABC', range(5), fillvalue='?')))
+
+# itertools product 
+
+print(list(itertools.product('ABC', range(2)))) # [('A', 0), ('A', 1), ('B', 0), ('B', 1), ('C', 0), ('C', 1)]
+
+suits = 'spades hearts diamonds clubs'.split()
+print(list(itertools.product('AK', suits))) # [('A', 'spades'), ('A', 'hearts'), ('A', 'diamonds'), ('A', 'clubs'), ('K', 'spades'), ('K', 'hearts'), ('K', 'diamonds'), ('K', 'clubs')]
+print(list(itertools.product('ABC', repeat=2))) #[('A', 'A'), ('A', 'B'), ('A', 'C'), ('B', 'A'), ('B', 'B'), ('B', 'C'), ('C', 'A'), ('C', 'B'), ('C', 'C')]
+
+print(list(itertools.product(range(2), repeat=3))) # [(0, 0, 0), (0, 0, 1), (0, 1, 0), (0, 1, 1), (1, 0, 0), (1, 0, 1), (1, 1, 0), (1, 1, 1)]
+rows = itertools.product('AB', range(2), repeat=2)
+for row in rows: print(row)
+"""
+    ('A', 0, 'A', 0)
+    ('A', 0, 'A', 1)
+    ('A', 0, 'B', 0)
+    ('A', 0, 'B', 1)
+    ('A', 1, 'A', 0)
+    ('A', 1, 'A', 1)
+    ('A', 1, 'B', 0)
+    ('A', 1, 'B', 1)
+    ('B', 0, 'A', 0)
+    ('B', 0, 'A', 1)
+    ('B', 0, 'B', 0)
+    ('B', 0, 'B', 1)
+    ('B', 1, 'A', 0)
+    ('B', 1, 'A', 1)
+    ('B', 1, 'B', 0)
+    ('B', 1, 'B', 1)
+"""
