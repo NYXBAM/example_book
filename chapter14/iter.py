@@ -373,3 +373,35 @@ for row in rows: print(row)
     ('B', 1, 'B', 0)
     ('B', 1, 'B', 1)
 """
+
+ # combinations
+ # combinations_with_replacement
+ # count 
+ # cycle 
+ # permutations
+ # repeat
+
+ct = itertools.count()
+print(next(ct)) # 0
+print(next(ct)) # 1
+
+print(list(itertools.islice(itertools.count(1, .3), 3))) # [1, 1.3, 1.6]
+cy = itertools.cycle('ABC')
+print(next(cy)) # A
+
+print(list(itertools.islice(cy, 7))) # ['B', 'C', 'A', 'B', 'C', 'A', 'B']
+rp = itertools.repeat(7)
+print(next(rp)) # 7
+print(next(rp)) # 7
+print(list(itertools.repeat(8, 4))) # [8, 8, 8, 8]
+
+print(list(map(operator.mul, range(11), itertools.repeat(5)))) # [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+
+# Combinations generator
+
+print(list(itertools.combinations('ABC', 2))) # [('A', 'B'), ('A', 'C'), ('B', 'C')]
+print(list(itertools.combinations_with_replacement('ABC', 2))) # [('A', 'A'), ('A', 'B'), ('A', 'C'), ('B', 'B'), ('B', 'C'), ('C', 'C')]
+print(list(itertools.permutations('ABC', 2))) # [('A', 'B'), ('A', 'C'), ('B', 'A'), ('B', 'C'), ('C', 'A'), ('C', 'B')]
+print(list(itertools.product('ABC', repeat=2))) # [('A', 'A'), ('A', 'B'), ('A', 'C'), ('B', 'A'), ('B', 'B'), ('B', 'C'), ('C', 'A'), ('C', 'B'), ('C', 'C')]
+
+ 
