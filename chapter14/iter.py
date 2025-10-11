@@ -405,3 +405,67 @@ print(list(itertools.permutations('ABC', 2))) # [('A', 'B'), ('A', 'C'), ('B', '
 print(list(itertools.product('ABC', repeat=2))) # [('A', 'A'), ('A', 'B'), ('A', 'C'), ('B', 'A'), ('B', 'B'), ('B', 'C'), ('C', 'A'), ('C', 'B'), ('C', 'C')]
 
  
+# groupby 
+# reverserd
+# tee
+
+print(list(itertools.groupby('LLLLAAGGG'))) # [('L', <itertools._grouper object at 0x10c6c93c0>), ('A', <itertools._grouper object at 0x10c6c9510>), ('G', <itertools._grouper object at 0x10c6cabc0>)]
+for char, group in itertools.groupby('LLLLAAGGG'):
+    print(char, '->', list(group))
+'''
+        L -> ['L', 'L', 'L', 'L']
+        A -> ['A', 'A']
+        G -> ['G', 'G', 'G']
+'''
+
+animals = ['duck', 'eagle', 'rat', 'giraffe', 'bear',
+           'bat', 'dolphin', 'shark', 'lion']
+animals.sort(key=len)
+print(animals) # ['rat', 'bat', 'duck', 'bear', 'lion', 'eagle', 'shark', 'giraffe', 'dolphin']
+
+for length, group in itertools.groupby(animals, len):
+    print(length, '->', list(group))
+
+'''
+3 -> ['rat', 'bat']
+4 -> ['duck', 'bear', 'lion']
+5 -> ['eagle', 'shark']
+7 -> ['giraffe', 'dolphin']
+'''
+for length, group in itertools.groupby(reversed(animals), len):
+    print(length, '->', list(group))
+    
+'''
+7 -> ['dolphin', 'giraffe']
+5 -> ['shark', 'eagle']
+4 -> ['lion', 'bear', 'duck']
+3 -> ['bat', 'rat']
+'''
+
+
+# itertools.tee
+
+print(list(itertools.tee('ABC'))) # [<itertools._tee object at 0x103a66b00>, <itertools._tee object at 0x103aed080>]
+g1, g2 = itertools.tee('ABC')
+
+print(next(g1)) # A
+print(next(g2)) # A
+print(list(g1)) # ['B', 'C']
+print(list(zip(*itertools.tee('ABC')))) # [('A', 'A'), ('B', 'B'), ('C', 'C')]
+
+# yield 
+
+def chain(*iterables):
+    for it in iterables:
+        for i in it:
+            yield i
+            
+s = 'ABC'
+t = tuple(range(3))
+print(list(chain(s, t))) # ['A', 'B', 'C', 0, 1, 2]
+
+def chain(*iterables):
+    for i in iterables:
+        yield from i
+
+print(list(chain(s, t))) # ['A', 'B', 'C', 0, 1, 2]
