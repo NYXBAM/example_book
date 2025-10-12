@@ -469,3 +469,76 @@ def chain(*iterables):
         yield from i
 
 print(list(chain(s, t))) # ['A', 'B', 'C', 0, 1, 2]
+
+
+# all and any
+
+print(all([1, 2, 3])) # True
+print(all([1, 0, 3])) # False 
+print(all([])) # True 
+# any 
+print(any([1, 2, 3])) # True
+print(any([1, 0, 3])) # True 
+print(any([0, 0, 0])) # False
+print(any([])) # False
+
+
+g = (n for n in [0, 0.0, 7, 8])
+print(any(g)) # True
+print(next(g)) # 8 # because 0 and 0.0 are false, then drop 7, and generator return next 8
+
+
+
+
+from random import randint
+
+def d6():
+    return randint(1, 6)
+
+d6_iter = iter(d6, 1)
+print(d6_iter) # <callable_iterator object at 0x101a7a070>
+for roll in d6_iter:
+    print(roll)
+    
+    
+def f(): 
+    def do_yield(n):
+        yield n
+    x = 0
+    while True:
+        x += 1
+        yield from do_yield(x) # use yield from to yield values from subgenerator
+        
+print(f()) # <generator object f at 0x10b63e8f0>
+
+
+class Fibonacci:
+    
+    def __iter__(self):
+        return FibonacciGenerator()
+    
+class FibonacciGenerator:
+    
+    def __init__(self):
+        self.a = 0
+        self.b = 1
+        
+    def __next__(self):
+        result = self.a
+        self.a, self.b = self.b, self.a + self.b
+        return result
+    
+    def __iter__(self):
+        return self
+    
+
+# fib = Fibonacci()
+# fib_gen = iter(fib)
+# for _ in range(10):
+#     print(next(fib_gen))
+
+def fibonacci():
+    a, b = 0, 1
+    while True:
+        yield a 
+        a, b = b, a + b
