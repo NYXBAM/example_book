@@ -1,39 +1,16 @@
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-30
-40
-50
-60
-70
-80
-1
-2
-3
-4
-5
-6
-7
-8
-90
-123
-123
-123
-12345
+class LookingGlass:
+    def __enter__(self):
+        import sys 
+        self.original_write = sys.stdout.write
+        sys.stdout.write = self.reverse_write
+        return 'JABBERWOCKY'
+    
+    def reverse_write(self, text):
+        self.original_write(text[::-1])
+        
+    def __exit__(self, exc_type, exc_value, traceback):
+        import sys
+        sys.stdout.write = self.original_write
+        if exc_type is ZeroDivisionError:
+            print('Please DO NOT divide by zero!')
+            return True
