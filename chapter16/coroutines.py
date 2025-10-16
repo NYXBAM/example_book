@@ -24,5 +24,22 @@ print(getgeneratorstate(my_coro2)) # 'GEN_CREATED'
 print(next(my_coro2)) # -> Strted: a = 14
 print(getgeneratorstate(my_coro2)) # 'GEN_SUSPENDED'
 print(my_coro2.send(28)) # -> Received: b = 28
-print(my_coro2.send(99)) # -> Received: c = 99
-print(getgeneratorstate(my_coro2)) # 'GEN_CLOSED'
+# print(my_coro2.send(99)) # -> Received: c = 99
+# print(getgeneratorstate(my_coro2)) # 'GEN_CLOSED'
+
+def averager():
+    total = 0.0
+    count = 0
+    average = None
+    while True:
+        term = yield average
+        total += term
+        count += 1
+        average = total / count
+        
+coro_avg = averager()
+print(next(coro_avg)) # None
+print(coro_avg.send(10)) # 10.0
+print(coro_avg.send(30)) # 20.0
+print(coro_avg.send(5))  # 15.0
+
