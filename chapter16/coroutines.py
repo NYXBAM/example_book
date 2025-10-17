@@ -27,6 +27,9 @@ print(my_coro2.send(28)) # -> Received: b = 28
 # print(my_coro2.send(99)) # -> Received: c = 99
 # print(getgeneratorstate(my_coro2)) # 'GEN_CLOSED'
 
+from coroutil import coroutine
+
+@coroutine
 def averager():
     total = 0.0
     count = 0
@@ -37,9 +40,18 @@ def averager():
         count += 1
         average = total / count
         
+# coro_avg = averager()
+# print(next(coro_avg)) # None
+# print(coro_avg.send(10)) # 10.0
+# print(coro_avg.send(30)) # 20.0
+# print(coro_avg.send(5))  # 15.0
+
+
 coro_avg = averager()
-print(next(coro_avg)) # None
+from inspect import getgeneratorstate
+print(getgeneratorstate(coro_avg)) # 'GEN_SUSPENDED'
 print(coro_avg.send(10)) # 10.0
 print(coro_avg.send(30)) # 20.0
-print(coro_avg.send(5))  # 15.0
+print(coro_avg.send(5)) # 15.0
 
+      
