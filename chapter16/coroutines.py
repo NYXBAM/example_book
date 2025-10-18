@@ -54,4 +54,8 @@ print(coro_avg.send(10)) # 10.0
 print(coro_avg.send(30)) # 20.0
 print(coro_avg.send(5)) # 15.0
 
-      
+coro_avg = averager() 
+print(coro_avg.send(40)) # 40.0
+print(coro_avg.send(50)) # 45.0
+# print(coro_avg.send('spam')) # TypeError: unsupported operand type(s) for +=: 'float' and 'str'
+# print(coro_avg.send(50)) # StopIteration
