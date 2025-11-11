@@ -19,8 +19,13 @@ class LineItem:
     def __init__(self, description, weight, price):
         self.description = description
         self.weight = weight
-        self.prcie = price
+        self.price = price
         
     def subtotal(self):
         return self.weight * self.price
     
+
+nutmeg = LineItem('Moluccan nutmeg', 8, 13.95)
+print(nutmeg)
+print(nutmeg.price, nutmeg.weight) #13.95 8
+print(sorted(vars(nutmeg).items())) # [('description', 'Moluccan nutmeg'), ('price', 13.95), ('weight', 8)]
